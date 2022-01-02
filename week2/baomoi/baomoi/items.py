@@ -12,7 +12,9 @@ class BaomoiItem(scrapy.Item):
     pass
 
 class ArticleItem(scrapy.Item):
+    _id = scrapy.Field()
     id = scrapy.Field()
+    type = scrapy.Field()
     slug = scrapy.Field()
     title = scrapy.Field()
     short_text = scrapy.Field()
