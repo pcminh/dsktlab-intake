@@ -44,7 +44,7 @@ class ArticlesSpider(scrapy.Spider):
         short_text = response.css('h3.bm_L.bm_AH::text').get()
         
         paragraphs = response.css('div.bm_Cc p.bm_V::text').getall()
-        content_text = functools.reduce(lambda x, y: x + '\n' + y, paragraphs)
+        content_text = functools.reduce(lambda x, y: x + '\n' + y, paragraphs, '')
 
         time = response.css('div.bm_AN time::attr(datetime)').get()
         cached_link = response.url
