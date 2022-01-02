@@ -94,3 +94,6 @@ ITEM_PIPELINES = {
 
 MONGO_URI = 'mongodb://mongoadmin:secret@localhost:27017/?authSource=admin'
 MONGO_DATABASE = 'baomoi'
+
+LOG_FILE = './log.txt'
+LOG_ENABLED = True
