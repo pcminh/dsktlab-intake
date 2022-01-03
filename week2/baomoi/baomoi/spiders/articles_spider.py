@@ -2,6 +2,8 @@ import scrapy
 from scrapy.loader import ItemLoader
 from baomoi.items import ArticleItem
 import functools
+import dateutil.parser
+import logging
 
 class ArticlesSpider(scrapy.Spider):
     name = 'articles'
@@ -12,12 +14,25 @@ class ArticlesSpider(scrapy.Spider):
         # Each page contains 18 article links
         # Therefore, maximum of 167 pages (166*18 + 12)
 
-        pages_count = 10
-        if self.pages is not None:
-            param_pages = int(self.pages)
-            pages_count = param_pages if param_pages <= 167 else 167
+        lower_bound = 1
+        upper_bound = 10
 
-        for x in range(1, pages_count + 1):
+        if self.from_page is not None and self.to_page is not None:
+            param_from = int(self.from_page)
+            param_to = int(self.to_page)
+            lower_bound = param_from if (param_from >= 1 and param_from <= param_to) else 1
+            upper_bound = param_to if (param_to >= 1 and param_to <= 167) else 167
+        elif self.from_page is not None and self.to_page is None:
+            param_from = int(self.from_page)
+            lower_bound = param_from if (param_from >= 1 and param_from <= 167) else 1
+            upper_bound = lower_bound + 10 if (lower_bound + 10 <= 167) else 167
+        elif self.from_page is None and self.to_page is not None:
+            param_to = int(self.to_page)
+            upper_bound = param_to if (param_to >= 1 and param_to <= 167) else 167
+
+        logging.info(f'Crawling from page {lower_bound} to page {upper_bound}')
+
+        for x in range(lower_bound, upper_bound + 1):
             url = f'https://baomoi.com/tin-moi/trang{x}.epi'
             yield scrapy.Request(url=url, callback=self.parse_articles_page)
 
@@ -46,7 +61,9 @@ class ArticlesSpider(scrapy.Spider):
         paragraphs = response.css('div.bm_Cc p.bm_V::text').getall()
         content_text = functools.reduce(lambda x, y: x + '\n' + y, paragraphs, '')
 
-        time = response.css('div.bm_AN time::attr(datetime)').get()
+        time_iso_string = response.css('div.bm_AN time::attr(datetime)').get()
+        time = dateutil.parser.isoparse(time_iso_string)
+
         cached_link = response.url
         publisher_link = response.css('p.bm_Bk span::text')[-1].get()
         tags = response.css('li.bm_BI a::text').getall()
@@ -62,7 +79,7 @@ class ArticlesSpider(scrapy.Spider):
 
         item['title'] = title
         item['short_text'] = short_text
-        item['content_text'] = content_text
+        item['content_text'] = content_text[1:]
         item['time'] = time
         item['cached_link'] = cached_link
         item['publisher_link'] = publisher_link

@@ -7,6 +7,9 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
+import logging
+
+
 BOT_NAME = 'baomoi'
 
 SPIDER_MODULES = ['baomoi.spiders']
@@ -97,3 +100,4 @@ MONGO_DATABASE = 'baomoi'
 
 LOG_FILE = './log.txt'
 LOG_ENABLED = True
+LOG_LEVEL = logging.INFO
