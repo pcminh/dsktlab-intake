@@ -44,6 +44,7 @@ ROBOTSTXT_OBEY = True
 
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+# scrapy-splash: Splash middlewares. https://github.com/scrapy-plugins/scrapy-splash#installation
 SPIDER_MIDDLEWARES = {
     'scrapy_splash.SplashDeduplicateArgsMiddleware': 100,
     'lazadavn.middlewares.LazadavnSpiderMiddleware': 543,
@@ -51,6 +52,7 @@ SPIDER_MIDDLEWARES = {
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
+# scrapy-splash: Splash middlewares. https://github.com/scrapy-plugins/scrapy-splash#installation
 DOWNLOADER_MIDDLEWARES = {
     'lazadavn.middlewares.LazadavnDownloaderMiddleware': 543,
     'scrapy_splash.SplashCookiesMiddleware': 723,
@@ -89,8 +91,13 @@ DOWNLOADER_MIDDLEWARES = {
 #HTTPCACHE_EXPIRATION_SECS = 0
 #HTTPCACHE_DIR = 'httpcache'
 #HTTPCACHE_IGNORE_HTTP_CODES = []
+
+# scrapy-splash: subclass of original scrapy FS Cache Storage
+HTTPCACHE_STORAGE = 'scrapy_splash.SplashAwareFSCacheStorage'
 #HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
+# scrapy-splash: Custom DUPEFILTER_CLASS
 DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
 
+# scrapy-splash: Splash server address
 SPLASH_URL = 'http://localhost:8050'
