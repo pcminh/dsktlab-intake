@@ -1,4 +1,4 @@
-# Sử dụng Scrapy thu thập bài báo từ baomoi.com
+# Sử dụng Scrapy để thu thập bài báo từ Báo Mới
 
 Sử dụng chuyên trang "Tin mới" (`/tin-moi`) làm điểm bắt đầu
 
@@ -34,34 +34,39 @@ Ví dụ một container bài báo có 1 ảnh:
 ```html
 <div class="bm_E">
   <div class="bm_Q">
-    <span
-      ><a
+    <span>
+      <a
         href="/du-bao-2022-mot-nam-day-bien-dong-trong-quan-he-my-trung/c/41385755.epi"
         class=""
         title="Dự báo 2022 - một năm đầy biến động trong quan hệ Mỹ - Trung"
         target="_blank"
         rel="noopener noreferrer"
-        ><figure class="bm_Bi bm_BL">
+      >
+        <figure class="bm_Bi bm_BL">
           <img
             src="https://photo-baomoi.zadn.vn/w300_r3x2/2022_01_02_30_41385755/72585bf9f2bb1be542aa.jpg"
             alt="Dự báo 2022 - một năm đầy biến động trong quan hệ Mỹ - Trung"
             class="bm_BM"
-          /></figure></a
-    ></span>
+          />
+        </figure>
+      </a>    <-- Relative link to a cached copy of the article -->
+    </span>
   </div>
 
   <div class="bm_AG">
     <div class="bm_AF">         <-- Article title container -->
       <h4 class="bm_L">         <-- Article title h4 header -->
-        <span
-          ><a
+        <span>
+          <a
             href="/du-bao-2022-mot-nam-day-bien-dong-trong-quan-he-my-trung/c/41385755.epi"
             class=""
             title="Dự báo 2022 - một năm đầy biến động trong quan hệ Mỹ - Trung"
             target="_blank"
             rel="noopener noreferrer"
-            >Dự báo 2022 - một năm đầy biến động trong quan hệ Mỹ - Trung</a
-          ></span
+          >
+            Dự báo 2022 - một năm đầy biến động trong quan hệ Mỹ - Trung
+          </a>    <-- Relative link to a cached copy of the article -->
+        </span
         >
       </h4>
     </div>
@@ -92,4 +97,26 @@ Mỗi trang (ví dụ: `tin-moi/trang1.epi`) có 18 link bài báo.
 
 Khi người dùng duyệt trên chuyên trang và đến các mốc bài báo thứ `n*18-1`, các bài báo mới của trang ngay sau đó
 sẽ được tải về (mỗi trang 18 link bài báo) và được thêm vào container `div.bm_AC`. Tối đa 6 trang tiếp theo sẽ
-được tải về và thêm vào trước khi người dùng phải bấm vào nút "Trang tiếp" để có thể duyệt tiếp
+được tải về và thêm vào trước khi người dùng phải bấm vào nút "Trang tiếp" để có thể duyệt tiếp.
+
+Sử dụng đường link ở trong các anchor để có thể crawl nội dung bài báo.
+
+## Trang của một bài báo (`/{slug}/{c | r}/{id}.epi`)
+
+### Định dạng của URL
+Một URL của một trang bài báo có dạng như sau:
+```
+https://baomoi.com/{article_slug}/{switch: c | r}/{article_id}.epi
+                    ^              ^               ^
+                    (1)            (2)             (3)
+```
+
+URL gồm ba tham số cần phải quan tâm:
+
+  1. `{article_slug}`: Slug chứa tiêu đề bài báo
+  2. `{switch: c | r}`: Một dạng "switch", có thể nhận một trong hai giá trị:
+
+    - `c`: Sử dụng bản cache trên máy chủ của Báo Mới
+    - `r`: Redirect đến trang gốc của bài báo ở trang xuất bản
+  3. `{article_id}`: ID của bài báo lưu trên Báo Mới. Dạng số thập phân
+
