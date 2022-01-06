@@ -1,3 +1,5 @@
+import logging
+
 # Scrapy settings for lazadavn project
 #
 # For simplicity, this file contains only settings considered important or
@@ -37,10 +39,10 @@ ROBOTSTXT_OBEY = True
 #TELNETCONSOLE_ENABLED = False
 
 # Override the default request headers:
-#DEFAULT_REQUEST_HEADERS = {
+# DEFAULT_REQUEST_HEADERS = {
 #   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
 #   'Accept-Language': 'en',
-#}
+# }
 
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
@@ -62,15 +64,16 @@ DOWNLOADER_MIDDLEWARES = {
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
-#EXTENSIONS = {
+# EXTENSIONS = {
 #    'scrapy.extensions.telnet.TelnetConsole': None,
-#}
+# }
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'lazadavn.pipelines.LazadavnPipeline': 300,
-#}
+ITEM_PIPELINES = {
+    'lazadavn.pipelines.MongoPipeline': 300,
+    #    'lazadavn.pipelines.LazadavnPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html
@@ -101,3 +104,10 @@ DUPEFILTER_CLASS = 'scrapy_splash.SplashAwareDupeFilter'
 
 # scrapy-splash: Splash server address
 SPLASH_URL = 'http://localhost:8050'
+
+MONGO_URI = 'mongodb://mongoadmin:secret@localhost:27017/?authSource=admin'
+MONGO_DATABASE = 'lazadavn'
+
+LOG_FILE = './log.txt'
+LOG_ENABLED = True
+# LOG_LEVEL = logging.INFO
