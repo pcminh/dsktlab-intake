@@ -49,7 +49,7 @@ class ProductsSpider(scrapy.Spider):
         # product_sku string will be changed using the History API by the React application
         product_id = slug_tokens[-2][1:]
         product_sku = slug_tokens[-1][1:]
-        product_slug = functools.reduce(lambda x, y: x + '-' + y, slug_tokens[:-3])
+        product_slug = functools.reduce(lambda x, y: x + '-' + y, slug_tokens[:-2])
 
         # Lazada Product Page dynamically loads content from their server
 
@@ -131,6 +131,12 @@ class ProductsSpider(scrapy.Spider):
         }
         product['productOptions'] = module_data_fields['productOption']['skuBase']['properties']
         product['productSkus'] = skus
+        product['prices'] = {
+            'lowPrice': product_data['offers']['lowPrice'],
+            'highPrice': product_data['offers']['highPrice'],
+            'priceCurrency': product_data['offers']['priceCurrency'],
+            'offerCount': product_data['offers']['offerCount']
+        }
 
         yield product
 

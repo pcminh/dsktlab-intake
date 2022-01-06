@@ -25,4 +25,6 @@ class ProductItem(scrapy.Item):
     seller = scrapy.Field()
     productOptions = scrapy.Field()
     productSkus = scrapy.Field()
+    prices = scrapy.Field()
+    
 
