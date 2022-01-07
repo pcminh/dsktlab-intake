@@ -110,4 +110,4 @@ MONGO_DATABASE = 'lazadavn'
 
 LOG_FILE = './log.txt'
 LOG_ENABLED = True
-# LOG_LEVEL = logging.INFO
+LOG_LEVEL = logging.INFO

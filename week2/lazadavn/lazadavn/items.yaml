@@ -63,6 +63,43 @@ items_schema:
       stock:
         type: integer
         example: 11
+  Review:
+    type: object
+    properties:
+      review_id:
+        type: integer
+        example: 272077481058590
+      buyer_id:
+        type: integer
+        example: 7985702
+      buyer_name:
+        type: string
+        example: "Joe Mama"
+      buyer_email:
+        type: string
+        format: email
+        example: 'joemama@example.com'
+      is_purchased:
+        type: boolean
+      is_guest:
+        type: boolean
+      is_helpful:
+        type: boolean
+      bought_date:
+        type: string
+        format: date
+      review_date:
+        type: string
+        format: date
+      rating:
+        type: integer
+        enum: [1, 2, 3, 4, 5]
+      review_content:
+        type: string
+        example: "Quick delivery. Great product. Example Lorem Ipsum blah blah blah"
+      sku_info:
+        type: string
+        example: "Color:Rose Gold, Variant:8GB / 256GB"
   Product:
     type: object
     properties:
@@ -139,3 +176,15 @@ items_schema:
         type: array
         items:
           $ref: '#/items_schema/ProductSku'
+      prices:
+        type: object
+        properties:
+          low_price:
+            type: integer
+          high_price:
+            type: integer
+          price_currency:
+            type: string
+          offer_count:
+            type: integer
+      

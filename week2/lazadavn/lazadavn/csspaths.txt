@@ -3,3 +3,5 @@ response.css('h1.pdp-mod-product-badge-title::text').get()                      
 response.css('div.pdp-product-brand > a.pdp-product-brand__brand-link').get()               product_brand + brand_link
 response.css('div.pdp-product-price span::text').getall()                                   product_prices
 response.css('div.seller-name__detail a.seller-name__detail-name').getall()                 seller_name + seller_link
+/html/body/script[14]   script
+/html/body/script[14]
