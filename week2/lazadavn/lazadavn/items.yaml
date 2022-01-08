@@ -1,0 +1,190 @@
+items_schema:
+  Seller:
+    type: object
+    properties:
+      seller_id:
+        type: string
+        example: '100101649'
+      shop_id:
+        type: integer
+        examplE: 7272
+      seller_name:
+        type: string
+        example: 'Apple Flagship Store'
+      chat_responsive_rate:
+        type: number
+        format: double
+        example: 1.0
+      positive_seller_rate:
+        type: number
+        format: double
+        example: 0.94
+      ship_on_time_rate:
+        type: number
+        format: double
+        example: 0.9
+  ProductSku:
+    type: object
+    properties:
+      sku_id:
+        type: string
+        example: '3520978987'
+      inner_sku_id:
+        type: string
+        example: '1040858590_VNAMZ-3520978987'
+      prop_path:
+        type: string
+        comment: 'A string of key:value pairs where key=product_option and value=option_value, pairs deliminated by ";"'
+        example: '100005652:45144;120122201:8GB / 512 GB'
+      price:
+        type: object
+        properties:
+          discount:
+            type: string
+            example: '-13%'
+          originalPrice:
+            type: object
+            properties:
+              text:
+                type: string
+                example: '35.990.000d'
+              value:
+                type: integer
+                example: 35990000
+          salePrice:
+            type: object
+            properties:
+              text:
+                type: string
+                example: '35.990.000d'
+              value:
+                type: integer
+                example: 35990000
+      stock:
+        type: integer
+        example: 11
+  Review:
+    type: object
+    properties:
+      review_id:
+        type: integer
+        example: 272077481058590
+      buyer_id:
+        type: integer
+        example: 7985702
+      buyer_name:
+        type: string
+        example: "Joe Mama"
+      buyer_email:
+        type: string
+        format: email
+        example: 'joemama@example.com'
+      is_purchased:
+        type: boolean
+      is_guest:
+        type: boolean
+      is_helpful:
+        type: boolean
+      bought_date:
+        type: string
+        format: date
+      review_date:
+        type: string
+        format: date
+      rating:
+        type: integer
+        enum: [1, 2, 3, 4, 5]
+      review_content:
+        type: string
+        example: "Quick delivery. Great product. Example Lorem Ipsum blah blah blah"
+      sku_info:
+        type: string
+        example: "Color:Rose Gold, Variant:8GB / 256GB"
+  Product:
+    type: object
+    properties:
+      '_id':
+        type: string
+        example: 'product_1040858590'
+      type:
+        type: string
+        default: 'product'
+        example: 'product'
+      crawled_timestamp:
+        type: string
+        format: date-time
+      product_name:
+        type: string
+        example: 'MacBook Pro 14 inch'
+      product_id:
+        type: string
+        example: '1040858590'
+      slug:
+        type: string
+        example: 'macbook-pro-14-inch'
+      description:
+        type: string
+      category:
+        type: array
+        items:
+          type: string
+      breadcrumb:
+        type: array
+        items:
+          type: object
+          properties:
+            title:
+              type: string
+              example: 'Laptop'
+            url:  
+              type: string
+              example: 'https://www.lazada.vn/laptop/'
+      brand:
+        type: object
+        properties:
+          brand_name:
+            type: string
+            example: 'Apple'
+          url:
+            type: string
+            example: 'https://www.lazada.vn/apple'
+      seller:
+        $ref: '#/items_schema/Seller'
+      product_options:
+        type: array
+        items:
+          type: object
+          properties:
+            name:
+              type: string
+              example: 'Color'
+            pid:
+              type: string
+              example: '100005652'
+            values:
+              type: array
+              items:
+                type: object
+                properties:
+                  name: 
+                    type: string
+                    example: 'Silver'
+                  vid:
+                    type: string
+                    example: '45114'
+      product_skus:
+        type: array
+        items:
+          $ref: '#/items_schema/ProductSku'
+      prices:
+        type: object
+        properties:
+          low_price:
+            type: integer
+          high_price:
+            type: integer
+          price_currency:
+            type: string
+          offer_count:
+            type: integer
+      
